@@ -58,24 +58,28 @@ def hashMessages(pesan, algorithm="sha256"):
         return None
 
 def hashTypes(hashInput):
-    panjangHex = bytes.fromhex(hashInput)  # Menghitung panjang byte dari string yang diinputkan
-    panjangByte = len(panjangHex)  # Menghitung panjang byte dari string yang diinputkan
+    try:
+        panjangHex = bytes.fromhex(hashInput)  # Menghitung panjang byte dari string yang diinputkan
+        panjangByte = len(panjangHex)  # Menghitung panjang byte dari string yang diinputkan
 
-    print(f"Byte dari string  anda adalah {panjangByte} byte\n")
+        print(f"Byte dari string  anda adalah {panjangByte} byte\n")
 
-    kemungkinanHash = []
+        kemungkinanHash = []
 
-    for algoritma in hashlib.algorithms_guaranteed:
-        panjangHash = hashlib.new(algoritma).digest_size
+        for algoritma in hashlib.algorithms_guaranteed:
+            panjangHash = hashlib.new(algoritma).digest_size
 
-        if panjangByte == panjangHash:
-            kemungkinanHash.append(algoritma)
+            if panjangByte == panjangHash:
+                kemungkinanHash.append(algoritma)
         
 
-    print(f"Possible hashes: ")
-    for possibleHashes in kemungkinanHash:
-        print(f"[+] {possibleHashes}")
-    return kemungkinanHash
+        print(f"Possible hashes: ")
+        for possibleHashes in kemungkinanHash:
+            print(f"[+] {possibleHashes}")
+        return kemungkinanHash
+    except ValueError:
+        print("Hex not valid!")
+        return None
 
 
 def modeMenu():
@@ -89,22 +93,26 @@ def modeMenu():
     return choose
 
 def chooseMode():
-    choose = input("\nChoose a mode (1-4): ")
+    while True:
+        choose = input("\nChoose a mode (1-4): ")
 
-    if choose == "1":
-        message = input("Input the message to hash: ")
-        algorithm = input("input the hash algorithm (default: sha256): ") or "sha256"
+        if choose == "1":
+            message = input("Input the message to hash: ")
+            algorithm = input("input the hash algorithm (default: sha256): ") or "sha256"
 
-        if algorithm not in hashlib.algorithms_guaranteed:
-            print("Invalid algorithm. Please choose from the available algorithms.")
-            return chooseMode()
+            if algorithm not in hashlib.algorithms_guaranteed:
+                print("Invalid algorithm. Please choose from the available algorithms.")
+                return chooseMode()
 
-        hashedMessage = hashMessages(message, algorithm)
-        return print("Your hashed message: " + hashedMessage + " <= " + algorithm)
+            hashedMessage = hashMessages(message, algorithm)
+            return print("Your hashed message: " + hashedMessage + " <= " + algorithm)
     
-    elif choose == "2":
-        inputHash = input("Mari Tebak hash anda: ").strip()
-        typeHash = hashTypes(inputHash)
+        elif choose == "2":
+            inputHash = input("Mari Tebak hash anda: ").strip()
+            typeHash = hashTypes(inputHash)
+
+        else:
+            break
 
 
 if __name__ == "__main__":

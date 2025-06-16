@@ -4,14 +4,12 @@ from prettytable import PrettyTable
 
 def banner():
     print("""
-
-░█████╗░██╗░░██╗███████╗░█████╗░██╗░░██╗██╗░░░██╗██████╗░██╗░░██╗░█████╗░░██████╗██╗░░██╗
-██╔══██╗██║░░██║██╔════╝██╔══██╗██║░██╔╝██║░░░██║██╔══██╗██║░░██║██╔══██╗██╔════╝██║░░██║
-██║░░╚═╝███████║█████╗░░██║░░╚═╝█████═╝░██║░░░██║██████╔╝███████║███████║╚█████╗░███████║
-██║░░██╗██╔══██║██╔══╝░░██║░░██╗██╔═██╗░██║░░░██║██╔══██╗██╔══██║██╔══██║░╚═══██╗██╔══██║
-╚█████╔╝██║░░██║███████╗╚█████╔╝██║░╚██╗╚██████╔╝██║░░██║██║░░██║██║░░██║██████╔╝██║░░██║
-░╚════╝░╚═╝░░╚═╝╚══════╝░╚════╝░╚═╝░░╚═╝░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝╚═════╝░╚═╝░░╚═╝
-                Made by: @KyzaaDev                            
+██╗  ██╗██████╗ ██╗   ██╗████████╗███████╗
+██║  ██║██╔══██╗╚██╗ ██╔╝╚══██╔══╝██╔════╝
+███████║██████╔╝ ╚████╔╝    ██║   █████╗  
+██╔══██║██╔══██╗  ╚██╔╝     ██║   ██╔══╝  
+██║  ██║██████╔╝   ██║      ██║   ███████╗
+╚═╝  ╚═╝╚═════╝    ╚═╝      ╚═╝   ╚══════╝    Made by: @KyzaaDev                            
 """)
 
 def madeTablehash():
@@ -33,6 +31,7 @@ def madeTablehash():
         digest_size = nameAlgorithm.digest_size
         block_size = nameAlgorithm.block_size
         nameAlgorithm.update(b"password123")
+        upperAlgorithm = algoritma.upper()
 
         # operator logika untuk menentukan apakah algoritma tersebut adalah shake
         # jika iya, maka hash_example akan dihasilkan dengan panjang 16 byte. Dan akan mengembalikan nilai utuh jika hash tidak lebih dari 32 byte
@@ -44,16 +43,28 @@ def madeTablehash():
             hash_example = hash_example[:max_length] + "..."
         
         # memasukkan informasi ke dalam tabel yang telah dibuat
-        table.add_row([f"{algoritma}", f"{digest_size}", f"{block_size}", f"{hash_example}"])
+        table.add_row([f"{upperAlgorithm}", f"{digest_size}", f"{block_size}", f"{hash_example}"])
     
     return table
 
 # bagian kode yang menyimpan function pada menu
-def hashMessages(pesan, algorithm="sha256"):
-    try:
+def hashMessages(message, algorithm="sha256"):
+    try: 
+        if algorithm not in hashlib.algorithms_guaranteed:
+            print("Invalid algorithm. Please choose from the available algorithms.")
+            return None
+
         ubahHash = hashlib.new(algorithm)
-        ubahHash.update(pesan.encode())
-        return ubahHash.hexdigest()
+        ubahHash.update(message.encode())
+        hashedMessage  = ubahHash.hexdigest()
+
+        print("\n" + "="*40)
+        print(f"[✔ ] Hashed Message with {algorithm.upper()}:")
+        print(f"{hashedMessage}")
+        print("="*40)
+
+        return hashedMessage
+
     except ValueError:
         return None
 
@@ -73,7 +84,7 @@ def hashTypes(hashInput):
                 kemungkinanHash.append(algoritma)
         
 
-        print(f"Possible hashes: ")
+        print(f"💡 Possible algorithms: ")
         for possibleHashes in kemungkinanHash:
             print(f"[+] {possibleHashes}")
         return kemungkinanHash
@@ -83,7 +94,7 @@ def hashTypes(hashInput):
 
 
 def modeMenu():
-    print("\n")
+    print("\nAvailable mode: ")
     choose = PrettyTable()
     choose.field_names = ["Mode", "Description"]
     hashMess = choose.add_row(["1", "Hash a message"])
@@ -97,21 +108,18 @@ def chooseMode():
         choose = input("\nChoose a mode (1-4): ")
 
         if choose == "1":
-            message = input("Input the message to hash: ")
+            message = input("\nInput the message to hash: ")
             algorithm = input("input the hash algorithm (default: sha256): ") or "sha256"
-
-            if algorithm not in hashlib.algorithms_guaranteed:
-                print("Invalid algorithm. Please choose from the available algorithms.")
-                return chooseMode()
-
-            hashedMessage = hashMessages(message, algorithm)
-            return print("Your hashed message: " + hashedMessage + " <= " + algorithm)
+            if hashMessages(message, algorithm):
+                continue
+    
     
         elif choose == "2":
             inputHash = input("Mari Tebak hash anda: ").strip()
             typeHash = hashTypes(inputHash)
 
         else:
+            print("Invalid input, please try again!!")
             break
 
 
@@ -120,4 +128,3 @@ if __name__ == "__main__":
     print(madeTablehash())
     print(modeMenu())
     chooseMode()
-# lanjut ntar malem bang, mau main game dulu

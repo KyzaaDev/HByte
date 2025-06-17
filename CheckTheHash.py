@@ -9,11 +9,12 @@ def banner():
 ███████║██████╔╝ ╚████╔╝    ██║   █████╗  
 ██╔══██║██╔══██╗  ╚██╔╝     ██║   ██╔══╝  
 ██║  ██║██████╔╝   ██║      ██║   ███████╗
-╚═╝  ╚═╝╚═════╝    ╚═╝      ╚═╝   ╚══════╝    Made by: @KyzaaDev                            
+╚═╝  ╚═╝╚═════╝    ╚═╝      ╚═╝   ╚══════╝ 
+    Made by: @KyzaaDev                            
 """)
 
 def madeTablehash():
-    print("Available hash algorithms:")
+    print("🔐 Available hash algorithms:")
     # membuat tabel untuk menampilkan algoritma hash
     # dan informasi terkaitnya
     table = PrettyTable()
@@ -57,7 +58,7 @@ def hashMessages(message, algorithm="sha256"):
             ubahHash.update(message.encode())
             
             if "shake_" in algorithm:
-                panjangHash = input("Masukkan panjang hash yang anda inginkan: ")
+                panjangHash = int(input("🔢 Masukkan panjang hash yang anda inginkan: "))
                 hashedMessage  = ubahHash.hexdigest(panjangHash)
             else:
                 hashedMessage = ubahHash.hexdigest()
@@ -65,10 +66,10 @@ def hashMessages(message, algorithm="sha256"):
 
             print("\n" + "="*40)
             print(f"[✔ ] Hashed Message with {algorithm.upper()}:")
-            print(f"{hashedMessage}")
+            print(f"📄 {hashedMessage}")
             print("="*40)
 
-            input("Tekan enter untuk kembali ke menu utama...")
+            input("⏎ Tekan enter untuk kembali ke menu utama...")
 
             return hashedMessage
 
@@ -80,7 +81,7 @@ def hashTypes(hashInput):
         panjangHex = bytes.fromhex(hashInput)  # Menghitung panjang byte dari string yang diinputkan
         panjangByte = len(panjangHex)  # Menghitung panjang byte dari string yang diinputkan
 
-        print(f"Byte dari string  anda adalah {panjangByte} byte\n")
+        print(f"🔍 Byte dari string  anda adalah {panjangByte} byte\n")
 
         kemungkinanHash = []
 
@@ -95,39 +96,59 @@ def hashTypes(hashInput):
         for possibleHashes in kemungkinanHash:
             print(f"[+] {possibleHashes}")
         return kemungkinanHash
+
     except ValueError:
-        print("Hex not valid!")
+        print("❌ Hex not valid!")
         return None
+
+def compareHash(expectedHash, inputHash):
+    if expectedHash == inputHash:
+        return "✅ Hash cocok."
+    else:
+        return "❌ Hash tidak cocok"
 
 
 def modeMenu():
-    print("\nAvailable mode: ")
+    print("\n📂 Available mode: ")
     choose = PrettyTable()
     choose.field_names = ["Mode", "Description"]
-    hashMess = choose.add_row(["1", "Hash a message"])
-    hashType = choose.add_row(["2", "Check hash types"])
-    checkHash = choose.add_row(["3", "Check a hash"])
-    keluar = choose.add_row(["4", "Exit"])
+    hashMess = choose.add_row(["1", "🔏 Hash a message"])
+    hashType = choose.add_row(["2", "🧠 Check hash types"])
+    checkHash = choose.add_row(["3", "🔎 Check a hash"])
+    hashCompare = choose.add_row(["4", "📦 Hash Comparison"])
+    keluar = choose.add_row(["5", "🚪 Exit"])
     return choose
 
 def chooseMode():
     while True:
-        choose = input("\nChoose a mode (1-4): ")
+        choose = input("\n👉 Choose a mode (1-5): ").strip()
+
 
         if choose == "1":
-            message = input("\nInput the message to hash: ")
-            algorithm = input("input the hash algorithm (default: sha256): ") or "sha256"
+            message = input("\n✉️ Input the message to hash: ")
+            algorithm = input("⚙️ input the hash algorithm (default: sha256): ") or "sha256"
             
-            if hashMessages(message, algorithm):
+            if hashMessages(message, algorithm.lower()):
                 continue
-            print("Invalid algorithm. Please choose from the available algorithms.")
+            print("❗ Invalid algorithm. Please choose from the available algorithms.")
     
         elif choose == "2":
             inputHash = input("Mari Tebak hash anda: ").strip()
             typeHash = hashTypes(inputHash)
 
+        elif choose == "4":
+            expectedHash = input("Masukkan hash asli disini: ")
+            inputHash = input("Masukkan hash yang hendak dibandingkan disini: ")
+            print(compareHash(expectedHash, inputHash))
+        
+        elif choose == "5":
+            rillkh = input("Are you sure want to get out? (yes/no): ")
+            if rillkh.lower() == "yes":
+                break
+            else: 
+                continue
         else:
-            print("Invalid input, please try again!!")
+            print("❗ Invalid input, please try again!!")
             continue
 
 

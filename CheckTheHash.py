@@ -107,7 +107,6 @@ def compareHash(expectedHash, inputHash):
     else:
         return "❌ Hash tidak cocok"
 
-
 def modeMenu():
     print("\n📂 Available mode: ")
     choose = PrettyTable()
@@ -123,9 +122,9 @@ def chooseMode():
     while True:
         choose = input("\n👉 Choose a mode (1-5): ").strip()
 
-
         if choose == "1":
-            message = input("\n✉️ Input the message to hash: ")
+            print("\n⚠️ Catatan: Spasi termasuk bagian dari pesan yang di-hash!")
+            message = input("✉️ Input the message to hash: ")
             algorithm = input("⚙️ input the hash algorithm (default: sha256): ") or "sha256"
             
             if hashMessages(message, algorithm.lower()):
@@ -142,18 +141,30 @@ def chooseMode():
             print(compareHash(expectedHash, inputHash))
         
         elif choose == "5":
-            rillkh = input("Are you sure want to get out? (yes/no): ")
-            if rillkh.lower() == "yes":
+            rillkh = input("Are you sure want to get out? (y/n): ")
+            if rillkh.lower() == "y":
+                print("Bye Bye!!")
                 break
-            else: 
+
+            elif rillkh.lower() == "n": 
                 continue
+
+            else:
+                print("Input is invalid!")
+                continue
+
         else:
             print("❗ Invalid input, please try again!!")
             continue
 
-
-if __name__ == "__main__":
+def main():
     banner()
     print(madeTablehash())
     print(modeMenu())
     chooseMode()
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\nProgram stoped by user, BYE!")

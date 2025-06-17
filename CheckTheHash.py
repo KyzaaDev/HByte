@@ -51,19 +51,26 @@ def madeTablehash():
 def hashMessages(message, algorithm="sha256"):
     try: 
         if algorithm not in hashlib.algorithms_guaranteed:
-            print("Invalid algorithm. Please choose from the available algorithms.")
             return None
+        else:
+            ubahHash = hashlib.new(algorithm)
+            ubahHash.update(message.encode())
+            
+            if "shake_" in algorithm:
+                panjangHash = input("Masukkan panjang hash yang anda inginkan: ")
+                hashedMessage  = ubahHash.hexdigest(panjangHash)
+            else:
+                hashedMessage = ubahHash.hexdigest()
 
-        ubahHash = hashlib.new(algorithm)
-        ubahHash.update(message.encode())
-        hashedMessage  = ubahHash.hexdigest()
 
-        print("\n" + "="*40)
-        print(f"[✔ ] Hashed Message with {algorithm.upper()}:")
-        print(f"{hashedMessage}")
-        print("="*40)
+            print("\n" + "="*40)
+            print(f"[✔ ] Hashed Message with {algorithm.upper()}:")
+            print(f"{hashedMessage}")
+            print("="*40)
 
-        return hashedMessage
+            input("Tekan enter untuk kembali ke menu utama...")
+
+            return hashedMessage
 
     except ValueError:
         return None
@@ -110,9 +117,10 @@ def chooseMode():
         if choose == "1":
             message = input("\nInput the message to hash: ")
             algorithm = input("input the hash algorithm (default: sha256): ") or "sha256"
+            
             if hashMessages(message, algorithm):
                 continue
-    
+            print("Invalid algorithm. Please choose from the available algorithms.")
     
         elif choose == "2":
             inputHash = input("Mari Tebak hash anda: ").strip()
@@ -120,7 +128,7 @@ def chooseMode():
 
         else:
             print("Invalid input, please try again!!")
-            break
+            continue
 
 
 if __name__ == "__main__":

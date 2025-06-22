@@ -111,7 +111,7 @@ def modeMenu():
     print("\n📂 Available mode: ")
     choose = PrettyTable()
     choose.field_names = ["Mode", "Description"]
-    hashMess = choose.add_row(["1", "🔏 Hash a message"])
+    hashMess = choose.add_row(["1", "🔏 Hash password"])
     hashType = choose.add_row(["2", "🧠 Check hash types"])
     checkHash = choose.add_row(["3", "🔎 Check a hash"])
     hashCompare = choose.add_row(["4", "📦 Hash Comparison"])

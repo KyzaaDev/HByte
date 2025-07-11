@@ -58,7 +58,7 @@ def hashMessages(message, algorithm="sha256"):
             ubahHash.update(message.encode())
             
             if "shake_" in algorithm:
-                panjangHash = int(input("🔢 Masukkan panjang hash yang anda inginkan: "))
+                panjangHash = int(input("🔢 Enter the hash length you want: "))
                 hashedMessage  = ubahHash.hexdigest(panjangHash)
             else:
                 hashedMessage = ubahHash.hexdigest()
@@ -69,7 +69,7 @@ def hashMessages(message, algorithm="sha256"):
             print(f"📄 {hashedMessage}")
             print("="*40)
 
-            input("⏎ Tekan enter untuk kembali ke menu utama...")
+            input("⏎ Press enter to return to the main menu....")
 
             return hashedMessage
 
@@ -81,7 +81,7 @@ def hashTypes(hashInput):
         panjangHex = bytes.fromhex(hashInput)  # Menghitung panjang byte dari string yang diinputkan
         panjangByte = len(panjangHex)  # Menghitung panjang byte dari string yang diinputkan
 
-        print(f"🔍 Byte dari string  anda adalah {panjangByte} byte\n")
+        print(f"🔍 Hash byte length: {panjangByte} byte\n")
 
         kemungkinanHash = []
 
@@ -103,9 +103,9 @@ def hashTypes(hashInput):
 
 def compareHash(expectedHash, inputHash):
     if expectedHash == inputHash:
-        return "✅ Hash cocok."
+        return "✅ Hash matches."
     else:
-        return "❌ Hash tidak cocok"
+        return "❌ Hash doesn't match."
 
 def modeMenu():
     print("\n📂 Available mode: ")
@@ -123,7 +123,7 @@ def chooseMode():
         choose = input("\n👉 Choose a mode (1-5): ").strip()
 
         if choose == "1":
-            print("\n⚠️ Catatan: Spasi termasuk bagian dari pesan yang di-hash!")
+            print("\n⚠️ Note: Spaces are part of the hashed message!")
             message = input("✉️ Input the message to hash: ")
             algorithm = input("⚙️ input the hash algorithm (default: sha256): ") or "sha256"
             
@@ -132,12 +132,12 @@ def chooseMode():
             print("❗ Invalid algorithm. Please choose from the available algorithms.")
     
         elif choose == "2":
-            inputHash = input("Mari Tebak hash anda: ").strip()
+            inputHash = input("Let's Guess your hash: ").strip()
             typeHash = hashTypes(inputHash)
 
         elif choose == "4":
-            expectedHash = input("Masukkan hash asli disini: ")
-            inputHash = input("Masukkan hash yang hendak dibandingkan disini: ")
+            expectedHash = input("Enter the original hash: ")
+            inputHash = input("Enter the hash to compare: ")
             print(compareHash(expectedHash, inputHash))
         
         elif choose == "5":

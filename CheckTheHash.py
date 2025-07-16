@@ -141,8 +141,8 @@ def chooseMode():
             print(compareHash(expectedHash, inputHash))
         
         elif choose == "5":
-            rillkh = input("Are you sure want to get out? (y/n): ")
-            if rillkh.lower() == "y":
+            keluar = input("Are you sure want to get out? (y/n): ")
+            if keluar.lower() == "y":
                 print("Bye Bye!!")
                 break
 
